@@ -13,8 +13,15 @@ from server.main import app
 client = TestClient(app)
 
 
-def test_root() -> None:
+def test_root_serves_web_ui() -> None:
     resp = client.get("/")
+    assert resp.status_code == 200
+    assert "text/html" in resp.headers["content-type"]
+    assert "AnvilLLM" in resp.text
+
+
+def test_api_info() -> None:
+    resp = client.get("/api")
     assert resp.status_code == 200
     assert resp.json()["name"] == "AnvilLLM"
 
