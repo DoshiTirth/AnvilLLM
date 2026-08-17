@@ -1,8 +1,8 @@
 # Architecture
 
-> This document will be fully fleshed out once `feat/llama-server-docker`,
-> `feat/api-layer`, and `feat/rag-layer` have landed. For now, here's the
-> planned shape.
+<p align="center">
+  <img src="architecture-diagram.svg" width="700" alt="AnvilLLM architecture diagram">
+</p>
 
 ## Components
 
