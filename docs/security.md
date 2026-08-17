@@ -56,6 +56,24 @@ document ingestion is more expensive than a typical request.
 - The web search API key (`WEB_SEARCH_API_KEY`, if RAG web search is
   enabled) follows the same rules — treat it as sensitive.
 
+## Logging
+
+Every request is logged as a single JSON line to stdout: timestamp, request
+ID, method, path, status code, duration, and a **hashed** caller identity
+(SHA-256, truncated) - never the raw API key or IP address, and never
+request/response bodies. This means prompts, completions, and ingested
+document text never end up in log files, even at DEBUG level.
+
+Configure via `.env`:
+
+```
+LOG_LEVEL=INFO        # DEBUG, INFO, WARNING, ERROR
+LOG_JSON=true         # false for human-readable single-line logs (local dev)
+```
+
+Each response also includes an `X-Request-ID` header matching its log line,
+useful for correlating a specific request a user reports with your logs.
+
 ## Reporting a vulnerability
 
 Open an issue using the bug report template, or contact the maintainers
