@@ -1,0 +1,27 @@
+services:
+  llama-server:
+    build:
+      context: .
+      dockerfile: docker/llama-server.Dockerfile
+    container_name: anvilllm-llama-server
+    volumes:
+      - ./models:/models
+    command:
+      - --model
+      - /models/${MODEL_FILENAME:-llama-3.1-8b-instruct.Q4_K_M.gguf}
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8081"
+      - --ctx-size
+      - "${CONTEXT_SIZE:-8192}"
+    ports:
+      - "8081:8081"   # exposed for local debugging only; the api service
+                       # will talk to this over the internal compose network
+                       # once feat/api-layer lands, and this port mapping
+                       # can be removed for production use.
+    restart: unless-stopped
+
+# The `api` service (FastAPI wrapper, public-facing) is added in
+# feat/api-layer. Once merged, llama-server's port mapping above should be
+# removed so it's only reachable from the api service internally.
