@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from server.api import chat, models
+from server.api import chat, models, rag
 from server.core.llama_client import llama_client
 
 
@@ -23,6 +23,7 @@ app = FastAPI(
 
 app.include_router(chat.router)
 app.include_router(models.router)
+app.include_router(rag.router)
 
 
 @app.get("/")
