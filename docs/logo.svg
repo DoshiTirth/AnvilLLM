@@ -1,0 +1,16 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="anvilGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4B4B4B"/>
+      <stop offset="100%" stop-color="#232323"/>
+    </linearGradient>
+  </defs>
+  <!-- Anvil body -->
+  <path d="M40 120 L160 120 L150 140 L50 140 Z" fill="url(#anvilGrad)"/>
+  <path d="M60 140 L140 140 L135 175 L65 175 Z" fill="url(#anvilGrad)"/>
+  <rect x="90" y="90" width="20" height="35" fill="url(#anvilGrad)"/>
+  <path d="M70 90 L130 90 L145 110 L55 110 Z" fill="url(#anvilGrad)"/>
+  <!-- Spark -->
+  <polygon points="100,20 108,45 133,45 113,60 121,85 100,70 79,85 87,60 67,45 92,45"
+           fill="#F2994A"/>
+</svg>
