@@ -2,11 +2,12 @@
 
 from typing import Any
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from server.api.auth import require_api_key
+from server.api.rate_limit import limiter, rate_limit_string
 from server.core.llama_client import llama_client
 from server.rag.retrieval import build_context
 
@@ -28,10 +29,11 @@ class ChatCompletionRequest(BaseModel):
 
 
 @router.post("/v1/chat/completions", dependencies=[Depends(require_api_key)])
-async def chat_completions(request: ChatCompletionRequest) -> Any:
-    messages = [m.model_dump() for m in request.messages]
+@limiter.limit(rate_limit_string)
+async def chat_completions(request: Request, body: ChatCompletionRequest) -> Any:
+    messages = [m.model_dump() for m in body.messages]
 
-    if request.use_rag and messages:
+    if body.use_rag and messages:
         last_user_msg = next(
             (m["content"] for m in reversed(messages) if m["role"] == "user"), None
         )
@@ -40,14 +42,15 @@ async def chat_completions(request: ChatCompletionRequest) -> Any:
             if context:
                 messages = [{"role": "system", "content": context}] + messages
 
-    payload = request.model_dump(exclude_none=True, exclude={"use_rag", "messages"})
+    payload = body.model_dump(exclude_none=True, exclude={"use_rag", "messages"})
     payload["messages"] = messages
 
-    if request.stream:
+    if body.stream:
         return StreamingResponse(
             llama_client.chat_completion_stream(payload),
             media_type="text/event-stream",
         )
 
     return await llama_client.chat_completion(payload)
+
 
