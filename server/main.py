@@ -11,7 +11,9 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 
 from server.api import chat, models, rag
+from server.api.errors import register_exception_handlers
 from server.api.logging_middleware import RequestLoggingMiddleware
+from server.api.metrics import MetricsMiddleware, metrics_response
 from server.api.rate_limit import limiter
 from server.core.llama_client import llama_client
 from server.core.logging_config import setup_logging
@@ -37,6 +39,9 @@ app = FastAPI(
 app.state.limiter = limiter
 app.add_middleware(SlowAPIMiddleware)
 app.add_middleware(RequestLoggingMiddleware)
+app.add_middleware(MetricsMiddleware)
+
+register_exception_handlers(app)
 
 
 @app.exception_handler(RateLimitExceeded)
@@ -68,3 +73,8 @@ async def web_ui(request: Request) -> HTMLResponse:
 @app.get("/api")
 async def api_info() -> dict:
     return {"name": "AnvilLLM", "docs": "/docs"}
+
+
+@app.get("/metrics")
+async def metrics():
+    return metrics_response()
