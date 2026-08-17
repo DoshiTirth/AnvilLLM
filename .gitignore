@@ -1,0 +1,36 @@
+# Secrets
+.env
+*.pem
+*.key
+
+# Model weights (downloaded at setup time, never committed)
+models/
+*.gguf
+*.bin
+*.safetensors
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Node (web UI tooling, if used)
+node_modules/
+dist/
+
+# Logs
+logs/
+*.log
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Docker
+*.env.local
