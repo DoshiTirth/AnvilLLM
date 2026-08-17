@@ -56,7 +56,7 @@ cp .env.example .env
 docker compose up
 ```
 
-Then hit the API directly:
+Then open **http://localhost:8080** for the web UI, or hit the API directly:
 
 ```bash
 curl http://localhost:8080/v1/chat/completions \
@@ -66,11 +66,7 @@ curl http://localhost:8080/v1/chat/completions \
 
 Or list available models: `curl http://localhost:8080/v1/models`
 
-See [docs/deployment.md](docs/deployment.md) for hardware notes and GPU offload options.
-
-*(The web UI at port 8080 lands with the `feat/web-ui` PR — for now, the
-API itself is fully usable via curl or any OpenAI-compatible client
-pointed at `http://localhost:8080/v1`.)*
+See [docs/deployment.md](docs/deployment.md) for hardware notes and GPU offload options, and [docs/rag.md](docs/rag.md) for enabling retrieval.
 
 ## Licensing & Attribution
 
