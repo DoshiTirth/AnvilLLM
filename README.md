@@ -46,29 +46,31 @@ Everything runs on your own hardware. No prompts, responses, or data are ever se
 
 (Diagram will be replaced with a proper illustration in `docs/architecture.md` once the server is running end-to-end.)
 
-## Quickstart (current state: llama.cpp server only)
+## Quickstart
 
 ```bash
 git clone https://github.com/DoshiTirth/AnvilLLM.git
 cd AnvilLLM
 cp .env.example .env
 ./scripts/download_model.sh
-docker compose up llama-server
+docker compose up
 ```
 
-This runs the raw llama.cpp server directly on `localhost:8081`:
+Then hit the API directly:
 
 ```bash
-curl http://localhost:8081/v1/chat/completions \
+curl http://localhost:8080/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{"messages": [{"role": "user", "content": "Hello!"}]}'
 ```
 
+Or list available models: `curl http://localhost:8080/v1/models`
+
 See [docs/deployment.md](docs/deployment.md) for hardware notes and GPU offload options.
 
-*(The AnvilLLM API layer and web UI — public port 8080 — land with the
-`feat/api-layer` and `feat/web-ui` PRs. This quickstart will be updated to
-reflect the full stack once those merge.)*
+*(The web UI at port 8080 lands with the `feat/web-ui` PR — for now, the
+API itself is fully usable via curl or any OpenAI-compatible client
+pointed at `http://localhost:8080/v1`.)*
 
 ## Licensing & Attribution
 
