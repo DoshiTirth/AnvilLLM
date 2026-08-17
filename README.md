@@ -57,7 +57,7 @@ curl http://localhost:8080/v1/chat/completions \
 
 Or list available models: `curl http://localhost:8080/v1/models`
 
-See [docs/deployment.md](docs/deployment.md) for hardware notes and GPU offload options, [docs/rag.md](docs/rag.md) for enabling retrieval, and [docs/security.md](docs/security.md) for setting up API keys and rate limiting before exposing this beyond your own machine.
+See [docs/deployment.md](docs/deployment.md) for hardware notes and GPU offload options, [docs/rag.md](docs/rag.md) for enabling retrieval, [docs/security.md](docs/security.md) for setting up API keys and rate limiting before exposing this beyond your own machine, and [docs/reliability.md](docs/reliability.md) for retry behavior, error handling, and Prometheus metrics.
 
 ## Licensing & Attribution
 
