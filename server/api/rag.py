@@ -1,9 +1,10 @@
 """Endpoints for managing and testing the RAG layer."""
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel
 
 from server.api.auth import require_api_key
+from server.api.rate_limit import limiter
 from server.core.config import settings
 from server.rag.chunking import chunk_text
 from server.rag.retrieval import build_context
@@ -28,11 +29,12 @@ class SearchRequest(BaseModel):
 
 
 @router.post("/ingest", response_model=IngestResponse, dependencies=[Depends(require_api_key)])
-async def ingest_document(request: IngestRequest) -> IngestResponse:
-    chunks = chunk_text(request.text)
+@limiter.limit("20/minute")
+async def ingest_document(request: Request, body: IngestRequest) -> IngestResponse:
+    chunks = chunk_text(body.text)
     if chunks:
         vector_store.add_documents(
-            chunks, metadatas=[{"source": request.source} for _ in chunks]
+            chunks, metadatas=[{"source": body.source} for _ in chunks]
         )
     return IngestResponse(chunks_added=len(chunks), total_documents=vector_store.count())
 
@@ -41,3 +43,4 @@ async def ingest_document(request: IngestRequest) -> IngestResponse:
 async def search_context(request: SearchRequest) -> dict:
     context = await build_context(request.query, top_k=request.top_k)
     return {"context": context, "rag_enabled": settings.enable_rag}
+

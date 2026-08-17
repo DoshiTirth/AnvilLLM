@@ -4,11 +4,14 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 
 from server.api import chat, models, rag
+from server.api.rate_limit import limiter
 from server.core.llama_client import llama_client
 
 _UI_DIR = Path(__file__).parent / "ui"
@@ -26,6 +29,23 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan,
 )
+
+app.state.limiter = limiter
+app.add_middleware(SlowAPIMiddleware)
+
+
+@app.exception_handler(RateLimitExceeded)
+async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
+    return JSONResponse(
+        status_code=429,
+        content={
+            "error": {
+                "message": "Rate limit exceeded. Please slow down.",
+                "type": "rate_limit_error",
+            }
+        },
+    )
+
 
 app.include_router(chat.router)
 app.include_router(models.router)
