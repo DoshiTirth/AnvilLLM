@@ -30,6 +30,10 @@ class Settings(BaseSettings):
     web_search_api_key: str = ""
     web_search_provider: str = ""
 
+    # Logging
+    log_level: str = "INFO"
+    log_json: bool = True
+
     @property
     def llama_server_base_url(self) -> str:
         return f"http://{self.llama_server_host}:{self.llama_server_port}"
