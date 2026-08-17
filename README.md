@@ -8,7 +8,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License">
   <img src="https://img.shields.io/badge/model-Llama%203.1%208B-informational" alt="Llama 3.1 8B">
-  <img src="https://img.shields.io/badge/status-work%20in%20progress-yellow" alt="WIP">
+  <a href="https://github.com/DoshiTirth/AnvilLLM/actions/workflows/ci.yml"><img src="https://github.com/DoshiTirth/AnvilLLM/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
 </p>
 
 ---
