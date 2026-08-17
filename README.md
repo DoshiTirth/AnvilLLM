@@ -25,26 +25,17 @@ AnvilLLM is a self-hosted inference stack for open-weight LLMs. It wraps
 
 Everything runs on your own hardware. No prompts, responses, or data are ever sent to a third-party LLM API — the reasoning happens entirely on the local model.
 
-> Status: scaffolding in progress. This README will be filled in with real
-> screenshots, architecture diagrams, and usage examples as each part lands.
-
 ## Architecture
 
-```
-┌─────────────┐      ┌──────────────┐      ┌──────────────────┐
-│  Web UI /   │◄────►│  FastAPI     │◄────►│  llama-server     │
-│  API client │      │  (this repo) │      │  (llama.cpp)      │
-└─────────────┘      └──────┬───────┘      └──────────────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │  RAG layer        │
-                    │  (local vectors + │
-                    │  web search tool) │
-                    └──────────────────┘
-```
+<p align="center">
+  <img src="docs/architecture-diagram.svg" width="700" alt="AnvilLLM architecture: Web UI/API client → FastAPI → llama-server, with an optional RAG layer">
+</p>
 
-(Diagram will be replaced with a proper illustration in `docs/architecture.md` once the server is running end-to-end.)
+## Screenshot
+
+<p align="center">
+  <img src="docs/screenshots/chat-ui.png" width="700" alt="AnvilLLM chat interface, dark theme, showing a conversation about llama.cpp vs vLLM">
+</p>
 
 ## Quickstart
 
@@ -88,8 +79,10 @@ pulls them directly from the official source.
 
 AnvilLLM has no telemetry and makes no calls to external LLM APIs. The only
 outbound network calls are: (1) a one-time model weight download at setup,
-(2) optional web search calls if you explicitly enable the RAG web-search
-tool, and (3) standard package/container registry pulls during build.
+(2) a one-time embedding model download the first time the RAG layer is
+used, (3) optional web search calls if you explicitly enable the RAG
+web-search tool, and (4) standard package/container registry pulls during
+build.
 
 ## Contributing
 
