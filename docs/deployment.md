@@ -44,9 +44,10 @@ levels (e.g. Q3) use less RAM/VRAM at some quality cost; higher levels
 
 On every merge to `main`, CI builds and pushes images to GitHub Container
 Registry: `ghcr.io/doshitirth/anvilllm-api` and
-`ghcr.io/doshitirth/anvilllm-llama-server`. Since this repo is currently
-private, pulling these requires authenticating to GHCR with a token that
-has read access to the repo's packages.
+`ghcr.io/doshitirth/anvilllm-llama-server` (registry paths are always
+lowercase, regardless of the GitHub username's casing). Since this repo is
+currently private, pulling these requires authenticating to GHCR with a
+token that has read access to the repo's packages.
 
 ## Production notes
 
